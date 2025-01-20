@@ -21,7 +21,7 @@ public class AdminController {
             return new ResponseEntity<>(all, HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    @PostMapping("/create-admin")
+    @PostMapping("/createadmin")
     public ResponseEntity<?> getAllEntry(@RequestBody UserEntry userEntry){
         userEntryService.createAdmin(userEntry);
         return new ResponseEntity<>(HttpStatus.OK);
