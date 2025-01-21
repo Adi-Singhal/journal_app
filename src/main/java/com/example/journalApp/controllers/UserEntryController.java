@@ -1,8 +1,10 @@
 package com.example.journalApp.controllers;
 
+import com.example.journalApp.api_response.WeatherResponse;
 import com.example.journalApp.entity.UserEntry;
 import com.example.journalApp.repository.UserEntryRepository;
 import com.example.journalApp.service.UserEntryService;
+import com.example.journalApp.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +21,8 @@ public class UserEntryController {
     private UserEntryService userEntryService;
     @Autowired
     private UserEntryRepository userEntryRepository;
-    @GetMapping
-    public ResponseEntity<?> getAllEntriesOfUsers(){
-        List<UserEntry>all=userEntryService.getEntry();
-        if(all!=null && !all.isEmpty())
-            return new ResponseEntity<>(all, HttpStatus.OK);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
+    @Autowired
+    private WeatherService weatherService;
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody UserEntry userEntry){
         Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
@@ -44,4 +40,15 @@ public class UserEntryController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping
+    public ResponseEntity<?> welcomeMsg()
+    {
+        Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
+        String username=authentication.getName();
+        String greeting="";
+        WeatherResponse weatherResponse =weatherService.getWeather("Bangalore");
+        if(weatherResponse!=null)
+            greeting=" Current Temperature is "+weatherResponse.getCurrent().getTemperature()+" Degree Celsius.";
+        return new ResponseEntity<>("Welcome Back "+authentication.getName()+greeting,HttpStatus.OK);
+    }
 }
