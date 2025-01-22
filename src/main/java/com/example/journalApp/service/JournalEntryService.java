@@ -5,6 +5,8 @@ import com.example.journalApp.entity.UserEntry;
 import com.example.journalApp.repository.JournalEntryRepository;
 import com.example.journalApp.repository.UserEntryRepository;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ public class JournalEntryService {
     private UserEntryRepository userEntryRepository;
     @Autowired
     private UserEntryService userEntryService;
+
     @Transactional
     public void saveEntry(JournalEntry journalEntry,String username)
     {
